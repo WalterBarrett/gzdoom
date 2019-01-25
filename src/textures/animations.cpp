@@ -258,7 +258,7 @@ void FTextureManager::InitAnimated (void)
 					animtype = FAnimDef::ANIM_Backward;
 				}
 
-				// Speed is stored as tics, but we want ms so scale accordingly.
+				// Speed is stored as Doom tics, but we want ms so scale accordingly.
 				FAnimDef *adef = AddSimpleAnim (pic1, pic2 - pic1 + 1, Scale (animspeed, 1000, 35));
 				if (adef != NULL) adef->AnimType = animtype;
 			}
@@ -559,18 +559,19 @@ FTextureID FTextureManager::ParseFramenum (FScanner &sc, FTextureID basepicnum, 
 
 void FTextureManager::ParseTime (FScanner &sc, uint32_t &min, uint32_t &max)
 {
+	// Convert Doom tics to ms
 	sc.MustGetString ();
 	if (sc.Compare ("tics"))
 	{
 		sc.MustGetFloat ();
-		min = max = uint32_t(sc.Float * 1000 / 35);
+		min = max = uint32_t(sc.Float * 1000.0 / 35.0);
 	}
 	else if (sc.Compare ("rand"))
 	{
 		sc.MustGetFloat ();
-		min = uint32_t(sc.Float * 1000 / 35);
+		min = uint32_t(sc.Float * 1000.0 / 35.0);
 		sc.MustGetFloat ();
-		max = uint32_t(sc.Float * 1000 / 35);
+		max = uint32_t(sc.Float * 1000.0 / 35.0);
 	}
 	else
 	{

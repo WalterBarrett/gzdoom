@@ -119,8 +119,8 @@ extern PClass *DefaultListMenuClass;
 extern PClass *DefaultOptionMenuClass;
 
 
-#define KEY_REPEAT_DELAY	(TICRATE*5/12)
-#define KEY_REPEAT_RATE		(3)
+#define KEY_REPEAT_DELAY	(TICRATE * 5 / 12.0)
+#define KEY_REPEAT_RATE		(3.0 * TICRATE / 35.0)
 
 //============================================================================
 //

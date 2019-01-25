@@ -1451,7 +1451,7 @@ void G_InitLevelLocals ()
 
 	BaseBlendA = 0.0f;		// Remove underwater blend effect, if any
 
-	level.gravity = sv_gravity * 35/TICRATE;
+	level.gravity = sv_gravity;
 	level.aircontrol = sv_aircontrol;
 	level.teamdamage = teamdamage;
 	level.flags = 0;
@@ -1482,7 +1482,7 @@ void G_InitLevelLocals ()
 	level.WallHorizLight = info->WallHorizLight*2;
 	if (info->gravity != 0.f)
 	{
-		level.gravity = info->gravity * 35/TICRATE;
+		level.gravity = info->gravity;
 	}
 	if (info->aircontrol != 0.f)
 	{

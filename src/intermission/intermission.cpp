@@ -515,7 +515,7 @@ int DIntermissionScreenCast::Ticker ()
 
 	casttics = caststate->GetTics();
 	if (casttics == -1)
-		casttics = 15;
+		casttics = TICS(15);
 	return 0;
 }
 

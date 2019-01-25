@@ -188,7 +188,7 @@ int		 		angleturn[4] = {640, 1280, 320, 320};		// + slow turn
 int				flyspeed[2] = {1*256, 3*256};
 int				lookspeed[2] = {450, 512};
 
-#define SLOWTURNTICS	6 
+#define SLOWTURNTICS	TICS(6)
 
 CVAR (Bool,		cl_run,			false,	CVAR_GLOBALCONFIG|CVAR_ARCHIVE)		// Always run?
 CVAR (Bool,		invertmouse,	false,	CVAR_GLOBALCONFIG|CVAR_ARCHIVE)		// Invert mouse look down/up?

@@ -195,6 +195,7 @@ struct gameinfo_t
 	int berserkpic;
 	double normforwardmove[2];
 	double normsidemove[2];
+	int TicRate = 35;	// State updates, number of tics / second.
 
 	const char *GetFinalePage(unsigned int num) const;
 };

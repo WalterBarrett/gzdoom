@@ -270,14 +270,14 @@ void ParseOldDecoration(FScanner &sc, EDefinitionType def, PNamespace *ns)
 			}
 			FState *state = &states[i];
 			state->NextState = &states[StateArray.Size() - 1];
-			state->Tics = 5;
+			state->Tics = TICS(5);
 			state->TicRange = 0;
 			state->Misc1 = 0;
 			state->SetAction("A_FreezeDeath");
 
 			i = StateArray.Size() - 1;
 			state->NextState = &states[i];
-			state->Tics = 1;
+			state->Tics = TICS(1);
 			state->TicRange = 0;
 			state->Misc1 = 0;
 			state->SetAction("A_FreezeDeathChunks");

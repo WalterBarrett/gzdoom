@@ -17,7 +17,7 @@ class CoopStatusScreen : StatusScreen
 		acceleratestage = 0;
 		ng_state = 1;
 
-		cnt_pause = Thinker.TICRATE;
+		cnt_pause = gameinfo.TICRATE;
 
 		for (int i = 0; i < MAXPLAYERS; i++)
 		{
@@ -191,7 +191,7 @@ class CoopStatusScreen : StatusScreen
 			if (!--cnt_pause)
 			{
 				ng_state++;
-				cnt_pause = Thinker.TICRATE;
+				cnt_pause = gameinfo.TICRATE;
 			}
 		}
 	}

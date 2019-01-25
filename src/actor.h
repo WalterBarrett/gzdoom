@@ -47,6 +47,7 @@
 #include "g_level.h"
 #include "tflags.h"
 #include "portal.h"
+#include "gi.h"
 
 struct subsector_t;
 struct FBlockNode;
@@ -1481,7 +1482,7 @@ public:
 	// Better have it in one place, if something needs to be changed about the formula.
 	double DistanceBySpeed(AActor *dest, double speed)
 	{
-		return MAX(1., Distance2D(dest) / speed);
+		return MAX(1., Distance2D(dest) / (speed * TICMULTI));
 	}
 
 	int ApplyDamageFactor(FName damagetype, int damage) const;

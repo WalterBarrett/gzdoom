@@ -73,6 +73,7 @@ DEFINE_FIELD_X(GameInfoStruct, gameinfo_t, berserkpic)
 DEFINE_FIELD_X(GameInfoStruct, gameinfo_t, defaultdropstyle)
 DEFINE_FIELD_X(GameInfoStruct, gameinfo_t, normforwardmove)
 DEFINE_FIELD_X(GameInfoStruct, gameinfo_t, normsidemove)
+DEFINE_FIELD_X(GameInfoStruct, gameinfo_t, TicRate)
 
 const char *GameNames[17] =
 {
@@ -433,12 +434,13 @@ void FMapInfoParser::ParseGameInfo()
 			GAMEINFOKEY_STRING(statusscreen_dm, "statscreen_dm")
 			GAMEINFOKEY_TWODOUBLES(normforwardmove, "normforwardmove")
 			GAMEINFOKEY_TWODOUBLES(normsidemove, "normsidemove")
+			GAMEINFOKEY_INT(TicRate, "ticrate")
 
 		else
 		{
 			DPrintf(DMSG_ERROR, "Unknown GAMEINFO key \"%s\" found in %s:%i\n", nextKey.GetChars(), sc.ScriptName.GetChars(), sc.Line);
 
-			// ignore unkown keys.
+			// ignore unknown keys.
 			sc.UnGet();
 			SkipToNext();
 		}

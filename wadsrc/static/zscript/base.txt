@@ -376,6 +376,7 @@ struct GameInfoStruct native
 	native TextureID berserkpic;
 	native double normforwardmove[2];
 	native double normsidemove[2];
+	native readonly int TicRate;
 }
 
 class Object native
@@ -458,8 +459,6 @@ class Thinker : Object native play
 		STAT_BOT,								// Bot thinker
 		MAX_STATNUM = 127
 	}
-
-	const TICRATE = 35;
 	
 	virtual native void Tick();
 	virtual native void PostBeginPlay();
@@ -467,7 +466,7 @@ class Thinker : Object native play
 	
 	static clearscope int Tics2Seconds(int tics)
 	{
-		return int(tics / TICRATE);
+		return int(tics / gameinfo.TicRate);
 	}
 
 }

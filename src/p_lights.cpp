@@ -167,9 +167,9 @@ private:
 	int PhaseHelper(sector_t *sector, int index, int light, sector_t *prev);
 };
 
-#define GLOWSPEED				8
-#define STROBEBRIGHT			5
-#define FASTDARK				15
+#define GLOWSPEED				(8.0 * TICMULTI)
+#define STROBEBRIGHT			(5.0 * TICMULTI)
+#define FASTDARK				(15.0 * TICMULTI)
 #define SLOWDARK				TICRATE
 
 

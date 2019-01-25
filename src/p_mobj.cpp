@@ -1795,7 +1795,7 @@ double P_XYMovement (AActor *mo, DVector2 scroll)
 	double oldz = mo->Z();
 
 	double maxmove = (mo->waterlevel < 1) || (mo->flags & MF_MISSILE) || 
-					  (mo->player && mo->player->crouchoffset<-10) ? MAXMOVE : MAXMOVE/4;
+					  (mo->player && mo->player->crouchoffset<-10) ? MAXMOVE * TICMULTI : MAXMOVE/4 * TICMULTI;
 
 	if (mo->flags2 & MF2_WINDTHRUST && mo->waterlevel < 2 && !(mo->flags & MF_NOCLIP))
 	{
@@ -1803,16 +1803,16 @@ double P_XYMovement (AActor *mo, DVector2 scroll)
 		switch (special)
 		{
 			case 40: case 41: case 42: // Wind_East
-				mo->Thrust(0., windTab[special-40]);
+				mo->Thrust(0., windTab[special-40] * TICMULTI);
 				break;
 			case 43: case 44: case 45: // Wind_North
-				mo->Thrust(90., windTab[special-43]);
+				mo->Thrust(90., windTab[special-43] * TICMULTI);
 				break;
 			case 46: case 47: case 48: // Wind_South
-				mo->Thrust(270., windTab[special-46]);
+				mo->Thrust(270., windTab[special-46] * TICMULTI);
 				break;
 			case 49: case 50: case 51: // Wind_West
-				mo->Thrust(180., windTab[special-49]);
+				mo->Thrust(180., windTab[special-49] * TICMULTI);
 				break;
 		}
 	}
@@ -1829,8 +1829,8 @@ double P_XYMovement (AActor *mo, DVector2 scroll)
 		(mo->player != NULL && mo->player->crouchfactor < 0.75)) && !(mo->flags8 & MF8_NOFRICTION)))
 	{
 		// preserve the direction instead of clamping x and y independently.
-		double cx = mo->Vel.X == 0 ? 1. : clamp(mo->Vel.X, -maxmove, maxmove) / mo->Vel.X;
-		double cy = mo->Vel.Y == 0 ? 1. : clamp(mo->Vel.Y, -maxmove, maxmove) / mo->Vel.Y;
+		double cx = mo->Vel.X == 0 ? 1. * TICMULTI : clamp(mo->Vel.X * TICMULTI, -maxmove, maxmove) / mo->Vel.X * TICMULTI;
+		double cy = mo->Vel.Y == 0 ? 1. * TICMULTI : clamp(mo->Vel.Y * TICMULTI, -maxmove, maxmove) / mo->Vel.Y * TICMULTI;
 		double fac = MIN(cx, cy);
 
 		mo->Vel.X *= fac;
@@ -1886,7 +1886,7 @@ double P_XYMovement (AActor *mo, DVector2 scroll)
 
 	// [RH] Adjust player movement on sloped floors
 	DVector2 startmove = move;
-	walkplane = P_CheckSlopeWalk (mo, move);
+	walkplane = P_CheckSlopeWalk (mo, move * (double)TICMULTI);
 
 	// [RH] Take smaller steps when moving faster than the object's size permits.
 	// Moving as fast as the object's "diameter" is bad because it could skip
@@ -1925,7 +1925,7 @@ double P_XYMovement (AActor *mo, DVector2 scroll)
 
 	// P_SlideMove needs to know the step size before P_CheckSlopeWalk
 	// because it also calls P_CheckSlopeWalk on its clipped steps.
-	DVector2 onestep = startmove / steps;
+	DVector2 onestep = (startmove * TICMULTI / steps);
 
 	start = mo->Pos();
 	step = 1;
@@ -1950,7 +1950,7 @@ double P_XYMovement (AActor *mo, DVector2 scroll)
 		if (i_compatflags & COMPATF_WALLRUN) pushtime++;
 		tm.PushTime = pushtime;
 
-		ptry = start + move * step / steps;
+		ptry = start + (move * TICMULTI) * step / steps;
 
 		DVector2 startvel = mo->Vel;
 
@@ -2019,10 +2019,10 @@ double P_XYMovement (AActor *mo, DVector2 scroll)
 							if (!player || !(i_compatflags & COMPATF_WALLRUN))
 							{
 								move = mo->Vel;
-								onestep = move / steps;
-								P_CheckSlopeWalk (mo, move);
+								onestep = move * TICMULTI / steps;
+								P_CheckSlopeWalk (mo, move * TICMULTI);
 							}
-							start = mo->Pos().XY() - move * step / steps;
+							start = mo->Pos().XY() - (move * TICMULTI) * step / steps;
 						}
 					}
 					else
@@ -2200,7 +2200,7 @@ explode:
 						move = move.Rotated(anglediff);
 						oldangle = mo->Angles.Yaw;
 					}
-					start = mo->Pos() - move * step / steps;
+					start = mo->Pos() - (move * TICMULTI) * step / steps;
 				}
 			}
 		}
@@ -2304,6 +2304,10 @@ explode:
 		// bobbing, so ice works much better now.
 
 		double friction = P_GetFriction (mo, NULL);
+		//double origFriction = friction;
+		//friction = (friction + (TICRATE / 35.0) - 1) / (TICRATE / 35.0);
+		//Printf("%f -> %f\n", origFriction, friction);
+		//friction = (friction + TICMULTI - 1) / TICMULTI;
 
 		mo->Vel.X *= friction;
 		mo->Vel.Y *= friction;
@@ -2363,7 +2367,7 @@ void P_ZMovement (AActor *mo, double oldfloorz)
 	double dist;
 	double delta;
 	double oldz = mo->Z();
-	double grav = mo->GetGravity();
+	double grav = mo->GetGravity() * TICMULTI;
 
 //
 // check for smooth step up
@@ -2374,7 +2378,7 @@ void P_ZMovement (AActor *mo, double oldfloorz)
 		mo->player->deltaviewheight = mo->player->GetDeltaViewHeight();
 	}
 
-	mo->AddZ(mo->Vel.Z);
+	mo->AddZ(mo->Vel.Z * TICMULTI);
 
 //
 // apply gravity
@@ -2475,16 +2479,16 @@ void P_ZMovement (AActor *mo, double oldfloorz)
 			dist = mo->Distance2D (mo->target);
 			delta = (mo->target->Center()) - mo->Z();
 			if (delta < 0 && dist < -(delta*3))
-				mo->AddZ(-mo->FloatSpeed);
+				mo->AddZ(-mo->FloatSpeed * TICMULTI);
 			else if (delta > 0 && dist < (delta*3))
-				mo->AddZ(mo->FloatSpeed);
+				mo->AddZ(mo->FloatSpeed * TICMULTI);
 		}
 	}
 	if (mo->player && (mo->flags & MF_NOGRAVITY) && (mo->Z() > mo->floorz))
 	{
 		if (!mo->IsNoClip2())
 		{
-			mo->AddZ(DAngle(360 / 80.f * level.maptime).Sin() / 8);
+			mo->AddZ(DAngle(360 / 80.f * level.maptime).Sin() / 8 * TICMULTI);
 		}
 
 		if (!(mo->flags8 & MF8_NOFRICTION))
@@ -2604,7 +2608,7 @@ void P_ZMovement (AActor *mo, double oldfloorz)
 				{
 					if (mo->player->jumpTics < 0 || mo->Vel.Z < minvel)
 					{ // delay any jumping for a short while
-						mo->player->jumpTics = 7;
+						mo->player->jumpTics = TICS(7);
 					}
 					if (mo->Vel.Z < minvel && !(mo->flags & MF_NOGRAVITY))
 					{

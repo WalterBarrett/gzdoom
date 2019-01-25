@@ -67,9 +67,10 @@ class Sentinel : Actor
 
 		if (missile != NULL && (missile.Vel.X != 0 || missile.Vel.Y != 0))
 		{
+			double adjustedVelZ = 35.0 / double(gameinfo.TICRATE);
 			for (int i = 8; i > 1; --i)
 			{
-				Actor trail = Spawn("SentinelFX1", Vec3Angle(missile.radius*i, missile.angle, 32 + missile.Vel.Z / 4 * i), ALLOW_REPLACE);
+				Actor trail = Spawn("SentinelFX1", Vec3Angle(missile.radius*i, missile.angle, 32 + adjustedVelZ / 4.0 * i), ALLOW_REPLACE);
 				if (trail != NULL)
 				{
 					trail.target = self;
@@ -77,7 +78,7 @@ class Sentinel : Actor
 					trail.CheckMissileSpawn (radius);
 				}
 			}
-			missile.AddZ(missile.Vel.Z / 4);
+			missile.AddZ(adjustedVelZ / 4.0);
 		}
 	}
 

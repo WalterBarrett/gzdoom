@@ -622,7 +622,7 @@ void FParser::SF_Beep(void)
 void FParser::SF_Clock(void)
 {
 	t_return.type = svt_int;
-	t_return.value.i = (gametic*100)/TICRATE;
+	t_return.value.i = (gametic*100)/(double)TICRATE;
 }
 
 /**************** doom stuff ****************/
@@ -1262,7 +1262,7 @@ void FParser::SF_ReactionTime(void)
 	
 		if(t_argc > 1)
 		{
-			if(mo) mo->reactiontime = (intvalue(t_argv[1]) * TICRATE) / 100;
+			if(mo) mo->reactiontime = (intvalue(t_argv[1]) * TICRATE) / 100.0;
 		}
 	
 		t_return.type = svt_int;
@@ -2035,7 +2035,7 @@ void FParser::SF_OpenDoor(void)
 		if (sectag==0) return;	// tag 0 not allowed
 		
 		// door wait time
-		if(t_argc > 1) wait_time = (intvalue(t_argv[1]) * TICRATE) / 100;
+		if(t_argc > 1) wait_time = (intvalue(t_argv[1]) * TICRATE) / 100.0;
 		else wait_time = 0;  // 0= stay open
 		
 		// door speed
@@ -3893,7 +3893,7 @@ void FParser::SF_Wait()
 	
 	runscr->wait_type = wt_delay;
 	
-	runscr->wait_data = (intvalue(t_argv[0]) * TICRATE) / 100;
+	runscr->wait_data = (intvalue(t_argv[0]) * TICRATE) / 100.0;
 	throw CFsTerminator();
 }
 

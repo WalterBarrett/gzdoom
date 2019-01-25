@@ -63,12 +63,16 @@ enum
 	// The maximum number of players, multiplayer/networking.
 	MAXPLAYERS = 8,
 
-	// State updates, number of tics / second.
-	TICRATE = 35,
-
 	// Amount of damage done by a telefrag.
 	TELEFRAG_DAMAGE = 1000000
 };
+
+
+// 
+#define TICS(a)			(((a)*gameinfo.TicRate)/35.0)
+#define OCTICS(a)		(((a)*gameinfo.TicRate)/8.0)
+#define TICMULTI		(35.0 / gameinfo.TicRate)
+#define TICRATE			gameinfo.TicRate
 
 
 // The current state of the game: whether we are

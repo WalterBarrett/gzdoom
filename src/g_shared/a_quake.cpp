@@ -31,6 +31,7 @@
 #include "serializer.h"
 #include "d_player.h"
 #include "r_utility.h"
+#include "gi.h"
 
 static FRandom pr_quake ("Quake");
 

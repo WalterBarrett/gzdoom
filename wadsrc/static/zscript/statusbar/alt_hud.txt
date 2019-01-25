@@ -815,7 +815,7 @@ class AltHud ui
 
 			if (showMillis)
 			{
-				int millis  = (level.time % Thinker.TICRATE) * (1000 / Thinker.TICRATE);
+				int millis  = (level.time % gameinfo.TICRATE) * (1000 / gameinfo.TICRATE);
 				timeString = String.Format("%02i:%02i:%02i.%03i", hours, minutes, seconds, millis);
 			}
 			else if (showSeconds)

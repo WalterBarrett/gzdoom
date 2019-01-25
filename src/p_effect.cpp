@@ -419,7 +419,7 @@ void P_RunEffect (AActor *actor, int effects)
 		// Rocket trail
 		double backx = -actor->radius * 2 * moveangle.Cos();
 		double backy = -actor->radius * 2 * moveangle.Sin();
-		double backz = actor->Height * ((2. / 3) - actor->Vel.Z / 8);
+		double backz = actor->Height * ((2. / 3) - actor->Vel.Z / 8); // This should take TICRATE into account.
 
 		DAngle an = moveangle + 90.;
 		double speed;
@@ -428,9 +428,9 @@ void P_RunEffect (AActor *actor, int effects)
 		if (particle) {
 			double pathdist = M_Random() / 256.;
 			DVector3 pos = actor->Vec3Offset(
-				backx - actor->Vel.X * pathdist,
-				backy - actor->Vel.Y * pathdist,
-				backz - actor->Vel.Z * pathdist);
+				backx - actor->Vel.X * pathdist, // This should take TICRATE into account.
+				backy - actor->Vel.Y * pathdist, // This should take TICRATE into account.
+				backz - actor->Vel.Z * pathdist); // This should take TICRATE into account.
 			particle->Pos = pos;
 			speed = (M_Random () - 128) * (1./200);
 			particle->Vel.X += speed * an.Cos();
@@ -445,9 +445,9 @@ void P_RunEffect (AActor *actor, int effects)
 			if (particle) {
 				double pathdist = M_Random() / 256.;
 				DVector3 pos = actor->Vec3Offset(
-					backx - actor->Vel.X * pathdist,
-					backy - actor->Vel.Y * pathdist,
-					backz - actor->Vel.Z * pathdist + (M_Random() / 64.));
+					backx - actor->Vel.X * pathdist, // This should take TICRATE into account.
+					backy - actor->Vel.Y * pathdist, // This should take TICRATE into account.
+					backz - actor->Vel.Z * pathdist + (M_Random() / 64.)); // This should take TICRATE into account.
 				particle->Pos = pos;
 
 				speed = (M_Random () - 128) * (1./200);
@@ -468,7 +468,7 @@ void P_RunEffect (AActor *actor, int effects)
 	{
 		// Grenade trail
 
-		DVector3 pos = actor->Vec3Angle(-actor->radius * 2, moveangle, -actor->Height * actor->Vel.Z / 8 + actor->Height * (2. / 3));
+		DVector3 pos = actor->Vec3Angle(-actor->radius * 2, moveangle, -actor->Height * actor->Vel.Z / 8 + actor->Height * (2. / 3)); // This should take TICRATE into account.
 
 		P_DrawSplash2 (6, pos, moveangle + 180, 2, 2);
 	}
@@ -729,7 +729,7 @@ void P_DrawRailTrail(AActor *source, TArray<SPortalHit> &portalhits, int color1,
 			if (!p)
 				return;
 
-			int spiralduration = (duration == 0) ? 35 : duration;
+			int spiralduration = (duration == 0) ? TICRATE : duration;
 
 			p->alpha = 1.f;
 			p->ttl = spiralduration;

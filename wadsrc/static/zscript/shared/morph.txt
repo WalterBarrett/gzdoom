@@ -104,6 +104,7 @@ extend class Actor
 			return false;
 		}
 
+		int defaultMorphTics = 40.0 * double(gameinfo.TicRate);
 		let morphed = MorphedMonster(Spawn (spawntype, Pos, NO_REPLACE));
 		Substitute (morphed);
 		if ((style & MRF_TRANSFERTRANSLATION) && !morphed.bDontTranslate)
@@ -118,7 +119,7 @@ extend class Actor
 		morphed.RenderStyle = RenderStyle;
 		morphed.Score = Score;
 
-		morphed.UnmorphTime = level.time + ((duration) ? duration : DEFMORPHTICS) + random[morphmonst]();
+		morphed.UnmorphTime = level.time + ((duration) ? duration : defaultMorphTics) + random[morphmonst]();
 		morphed.MorphStyle = style;
 		morphed.MorphExitFlash = (exit_flash) ? exit_flash : (class<Actor>)("TeleportFog");
 		morphed.FlagsSave = bSolid * 2 + bShootable * 4 + bInvisible * 0x40;	// The factors are for savegame compatibility
@@ -256,10 +257,11 @@ extend class PlayerPawn
 		{ // Immune when invulnerable unless this is a power we activated
 			return false;
 		}
+		int defaultMorphTics = 40.0 * double(gameinfo.TicRate);
 		if (player.morphTics)
 		{ // Player is already a beast
 			if ((GetClass() == spawntype) && bCanSuperMorph
-				&& (player.morphTics < (((duration) ? duration : DEFMORPHTICS) - TICRATE))
+				&& (player.morphTics < (((duration) ? duration : defaultMorphTics) - gameinfo.TicRate))
 				&& FindInventory('PowerWeaponLevel2', true) == null)
 			{ // Make a super chicken
 				GiveInventoryType ('PowerWeaponLevel2');
@@ -326,7 +328,7 @@ extend class PlayerPawn
 		bUnmorphed = true;
 		bInvisible = true;
 		
-		p.morphTics = (duration) ? duration : DEFMORPHTICS;
+		p.morphTics = (duration) ? duration : defaultMorphTics;
 
 		// [MH] Used by SBARINFO to speed up face drawing
 		p.MorphedPlayerClass = spawntype;
@@ -392,7 +394,7 @@ extend class PlayerPawn
 		{ // Didn't fit
 			altmo.bSolid = false;
 			bSolid = true;
-			player.morphTics = 2*TICRATE;
+			player.morphTics = 2*gameinfo.TicRate;
 			return false;
 		}
 		// No longer using tracer as morph storage. That is what 'alternative' is for. 
@@ -687,7 +689,7 @@ class MorphedMonster : Actor
 			unmorphed.bSolid = false;
 			bSolid = true;
 			bTouchy = save;
-			UnmorphTime = level.time + 5*TICRATE; // Next try in 5 seconds
+			UnmorphTime = level.time + 5*gameinfo.TicRate; // Next try in 5 seconds
 			return false;
 		}
 		unmorphed.Angle = Angle;

@@ -527,7 +527,7 @@ void HSendPacket (int node, int len)
 	{
 		PacketStore store;
 		store.message = doomcom;
-		store.timer = I_GetTime() + ((net_fakelatency / 2) / (1000 / TICRATE));
+		store.timer = I_GetTime() + ((net_fakelatency / 2.0) / (1000.0 / TICRATE));
 		OutBuffer.Push(store);
 	}
 	else
@@ -576,7 +576,7 @@ bool HGetPacket (void)
 	{
 		PacketStore store;
 		store.message = doomcom;
-		store.timer = I_GetTime() + ((net_fakelatency / 2) / (1000 / TICRATE));
+		store.timer = I_GetTime() + ((net_fakelatency / 2.0) / (1000.0 / TICRATE));
 		InBuffer.Push(store);
 		doomcom.remotenode = -1;
 	}
@@ -2860,8 +2860,8 @@ int Net_GetLatency(int *ld, int *ad)
 
 	for (i = 0; i < BACKUPTICS; i++) localdelay += netdelay[0][i];
 	for (i = 0; i < BACKUPTICS; i++) arbitratordelay += netdelay[nodeforplayer[Net_Arbitrator]][i];
-	arbitratordelay = ((arbitratordelay / BACKUPTICS) * ticdup) * (1000 / TICRATE);
-	localdelay = ((localdelay / BACKUPTICS) * ticdup) * (1000 / TICRATE);
+	arbitratordelay = ((arbitratordelay / BACKUPTICS) * ticdup) * (1000.0 / TICRATE);
+	localdelay = ((localdelay / BACKUPTICS) * ticdup) * (1000.0 / TICRATE);
 	int severity = 0;
 
 	if (MAX(localdelay, arbitratordelay) > 200)
@@ -2872,7 +2872,7 @@ int Net_GetLatency(int *ld, int *ad)
 	{
 		severity = 2;
 	}
-	if (MAX(localdelay, arbitratordelay) >= ((BACKUPTICS / 2 - 1) * ticdup) * (1000 / TICRATE))
+	if (MAX(localdelay, arbitratordelay) >= ((BACKUPTICS / 2.0 - 1) * ticdup) * (1000.0 / TICRATE))
 	{
 		severity = 3;
 	}

@@ -7,6 +7,7 @@
 #include "doomtype.h"
 #include "doomdef.h"
 #include "m_fixed.h"
+#include "gi.h"
 
 #include <stdio.h>
 #include <string.h>

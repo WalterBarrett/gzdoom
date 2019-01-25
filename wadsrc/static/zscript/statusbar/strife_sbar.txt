@@ -3,13 +3,13 @@ class StrifeStatusBar : BaseStatusBar
 {
 	
 	// Number of tics to move the popscreen up and down.
-	const POP_TIME = (Thinker.TICRATE/8);
+	int POP_TIME;
 
 	// Popscreen height when fully extended
 	const POP_HEIGHT = 104;
 
 	// Number of tics to scroll keys left
-	const KEY_TIME = (Thinker.TICRATE/3);
+	int KEY_TIME;
 
 	enum eImg
 	{
@@ -66,6 +66,9 @@ class StrifeStatusBar : BaseStatusBar
 		mYelFont = HUDFont.Create("Indexfont_Strife_Yellow", 7, true, 1, 1);
 		mGrnFont = HUDFont.Create("Indexfont_Strife_Green", 7, true, 1, 1);
 		mBigFont = HUDFont.Create("BigFont", 0, false, 2, 2);
+		
+		POP_TIME = (gameinfo.TICRATE/8);
+		KEY_TIME = (gameinfo.TICRATE/3);
 	}
 
 	override void NewGame ()

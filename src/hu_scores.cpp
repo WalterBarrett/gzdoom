@@ -374,11 +374,11 @@ static void HU_DrawTimeRemaining (int y)
 		if (timeleft < 0)
 			timeleft = 0;
 
-		hours = timeleft / (TICRATE * 3600);
-		timeleft -= hours * TICRATE * 3600;
-		minutes = timeleft / (TICRATE * 60);
-		timeleft -= minutes * TICRATE * 60;
-		seconds = timeleft / TICRATE;
+		hours = timeleft / ((double)TICRATE * 3600);
+		timeleft -= hours * (double)TICRATE * 3600;
+		minutes = timeleft / ((double)TICRATE * 60);
+		timeleft -= minutes * (double)TICRATE * 60;
+		seconds = timeleft / (double)TICRATE;
 
 		if (hours)
 			mysnprintf (str, countof(str), "Level ends in %d:%02d:%02d", hours, minutes, seconds);
@@ -440,7 +440,7 @@ static void HU_DrawPlayer (player_t *player, bool highlight, int col1, int col2,
 	}
 	avgdelay /= BACKUPTICS;
 
-	mysnprintf(str, countof(str), "%d", (avgdelay * ticdup) * (1000 / TICRATE));
+	mysnprintf(str, countof(str), "%d", (avgdelay * ticdup) * (1000 / (double)TICRATE));
 
 	screen->DrawText(SmallFont, color, col5, y + ypadding, str,
 		DTA_CleanNoMove, true, TAG_DONE);
